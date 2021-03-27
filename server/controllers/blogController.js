@@ -33,3 +33,8 @@ pool.getConnection((err, connection) => {
 
     });
 }
+//add blog
+exports.form = (req, res) => {
+    res.render('addBlog');
+
+}
