@@ -11,9 +11,11 @@ app.use(fileUpload());
 app.use(express.static('public'));
 app.use(express.static('upload'));
 
-app.engine('hbs', exphbs({ extname: '.hbs' }));
+//handlebars setup
+app.engine('hbs', exphbs({ extname: '.hbs', defaultLayout: 'index' }));
 app.set('view engine', 'hbs');
 
+//connect connections (limit 10)
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: 'localhost',
@@ -22,6 +24,8 @@ const pool = mysql.createPool({
   database: 'BubsBlog'
 });
 
+
+//connect to server
 pool.getConnection((err, connection) => {
   if (err) throw err; 
   console.log('Connected!');
@@ -36,7 +40,7 @@ app.get('', (req, res) => {
       connection.release();
 
       if (!err) {
-        res.render('index', { rows });
+        res.render('main');
       }
     });
   });
@@ -52,7 +56,7 @@ app.post('', (req, res) => {
 
   // name of the input is sampleFile
   sampleFile = req.files.sampleFile;
-  uploadPath = __dirname + '/upload/' + sampleFile.name;
+  uploadPath = __dirname + '/upload' + sampleFile.name;
 
   console.log(sampleFile);
 
