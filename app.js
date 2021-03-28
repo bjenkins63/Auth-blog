@@ -2,6 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const fileUpload = require('express-fileupload');
 const mysql = require('mysql2');
+var fs = require('fs');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -23,7 +24,6 @@ const pool = mysql.createPool({
   password: 'Bernie2020',
   database: 'BubsBlog'
 });
-
 
 //connect to server
 pool.getConnection((err, connection) => {
@@ -84,6 +84,31 @@ app.post('', (req, res) => {
     res.send('File uploaded!');
   });
 });
+
+
+// const db = require('./config/dbConfig.js');
+
+// const Image = db.images;
+  
+// // force: true will drop the table if it already exists
+// db.sequelize.sync({force: true}).then(() => {
+//   	//Give any image name here.
+// 	var imageData = fs.readFileSync(__dirname + '/upload/');
+// 	Image.create({
+// 		type: 'png',
+// 		name: 'JSA Banner',
+// 		data: imageData
+// 	}).then(image => {
+// 		try{
+// 			fs.writeFileSync(__dirname + '/upload', image.data);		
+			
+// 			// exit node.js app
+// 			process.exit(0);
+// 		}catch(e){
+// 			console.log(e);
+// 		}
+// 	})
+// });
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
