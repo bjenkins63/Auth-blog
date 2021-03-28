@@ -32,7 +32,7 @@ app.get('', (req, res) => {
     if (err) throw err;
     console.log('Connected!');
 
-    connection.query('SELECT * FROM blogs', (err, rows) => {
+    connection.query('SELECT * FROM blog', (err, rows) => {
       connection.release();
 
       if (!err) {
@@ -61,7 +61,7 @@ app.post('', (req, res) => {
     if (err) return res.status(500).send(err);
 
     pool.getConnection((err, connection) => {
-      if (err) throw err; // not connected
+      if (err) throw err;
       console.log('Connected!');
 
       connection.query('UPDATE user SET profile_image = ? WHERE id ="1"', [sampleFile.name], (err, rows) => {
@@ -80,7 +80,6 @@ app.post('', (req, res) => {
     res.send('File uploaded!');
   });
 });
-
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
