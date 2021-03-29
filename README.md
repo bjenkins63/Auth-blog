@@ -1,7 +1,7 @@
 # Auth-blog
 
 ## Description
-Write, save and delete notes.
+Sign in mechanism to reach the add blog page. Blogs displayed on the homepage.
 
 
 ## Table of Contents
