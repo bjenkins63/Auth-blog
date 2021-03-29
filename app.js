@@ -12,11 +12,20 @@ app.use(fileUpload());
 app.use(express.static('public'));
 app.use(express.static('upload'));
 
-//handlebars setup
-app.engine('hbs', exphbs({ extname: '.hbs', defaultLayout: 'index' }));
-app.set('view engine', 'hbs');
+const hbs = exphbs.create({});
 
-//connect connections (limit 10)
+
+//handlebars setup
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(_dirname, 'public')));
+
+app.use(require('./controllers/'));
+
+//connect for image upload
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: 'localhost',
@@ -25,26 +34,26 @@ const pool = mysql.createPool({
   database: 'BubsBlog'
 });
 
-//connect to server
+//image upload 
 pool.getConnection((err, connection) => {
   if (err) throw err; 
   console.log('Connected!');
 });
 
-app.get('', (req, res) => {
-  pool.getConnection((err, connection) => {
-    if (err) throw err;
-    console.log('Connected!');
+// app.get('', (req, res) => {
+//   pool.getConnection((err, connection) => {
+//     if (err) throw err;
+//     console.log('Connected!');
 
-    connection.query('SELECT * FROM blog', (err, rows) => {
-      connection.release();
+//     connection.query('SELECT * FROM blog', (err, rows) => {
+//       connection.release();
 
-      if (!err) {
-        res.render('main');
-      }
-    });
-  });
-});
+//       if (!err) {
+//         res.render('main');
+//       }
+//     });
+//   });
+// });
 
 app.post('', (req, res) => {
   let sampleFile;
@@ -84,31 +93,6 @@ app.post('', (req, res) => {
     res.send('File uploaded!');
   });
 });
-
-
-// const db = require('./config/dbConfig.js');
-
-// const Image = db.images;
-  
-// // force: true will drop the table if it already exists
-// db.sequelize.sync({force: true}).then(() => {
-//   	//Give any image name here.
-// 	var imageData = fs.readFileSync(__dirname + '/upload/');
-// 	Image.create({
-// 		type: 'png',
-// 		name: 'JSA Banner',
-// 		data: imageData
-// 	}).then(image => {
-// 		try{
-// 			fs.writeFileSync(__dirname + '/upload', image.data);		
-			
-// 			// exit node.js app
-// 			process.exit(0);
-// 		}catch(e){
-// 			console.log(e);
-// 		}
-// 	})
-// });
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

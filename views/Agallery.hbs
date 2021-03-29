@@ -1,0 +1,45 @@
+<div class="menu-container">
+  <div class="card-header col-md-10">
+    <h2>
+      Bubs Blog
+    </h2>
+  </div>
+  {{#each blogs as |blog|}}
+    <div class="blog col-md-5">
+      <p>
+        {{blog.id}}.
+        {{blog.title}}
+      </p>
+    </div>     
+  {{/each}}
+</div>
+
+
+<div class="add-blog-container">
+  <h2>
+    Add a blog
+  </h2>
+  <form class="new-blog-form">
+    <label for="title">
+      Title:
+    </label>
+    <br />
+    <textarea id="title" name="title" rows="2" cols="30">
+      {{title}}
+    </textarea>
+    <br />
+    <label for="description">
+      Description:
+    </label>
+    <br />
+    <textarea id="description" name="description" rows="5" cols="30">
+      {{description}}
+    </textarea>
+    <br />
+    <br />
+    <button type="submit" value="Submit">
+      Submit
+    </button>
+  </form>
+</div>
+<script src="/js/add-blog.js"></script>
